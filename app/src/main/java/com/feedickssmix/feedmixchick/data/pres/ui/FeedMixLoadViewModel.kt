@@ -3,7 +3,7 @@ package com.helathchickapp.chickhealth.sr.pres.ui
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.feedickssmix.feedmixchick.EggLabelAppsFlyerState
+import com.feedickssmix.feedmixchick.FeedMixAppsFlyerState
 import com.feedickssmix.feedmixchick.MainApplication
 import com.feedickssmix.feedmixchick.data.handlers.FeedMixChickLocalStorageManager
 import com.feedickssmix.feedmixchick.data.domain.data.FeedMixChSystemServiceI
@@ -31,17 +31,17 @@ class FeedMixLoadViewModel(
                     if (feedMixChSystemServiceI.feedMixCheckInternetConnection()) {
                         MainApplication.feedMMConversionFlow.collect {
                             when (it) {
-                                EggLabelAppsFlyerState.EggLabelDefault -> {}
-                                EggLabelAppsFlyerState.EggLabelError -> {
+                                FeedMixAppsFlyerState.FeedMixDefault -> {}
+                                FeedMixAppsFlyerState.FeedMixError -> {
                                     feedMixChickLocalStorageManager.feedMixAppState = 2
                                     _chickHealthHomeScreenState.value =
                                         FeedMixHomeScreenState.FeedMixError
                                     eggLabelGetApps = true
                                 }
 
-                                is EggLabelAppsFlyerState.EggLabelSuccess -> {
+                                is FeedMixAppsFlyerState.FeedMixSuccess -> {
                                     if (!eggLabelGetApps) {
-                                        eggLabelGetData(it.feedMixxChickkData)
+                                        feedMixGetData(it.feedMixxChickkData)
                                         eggLabelGetApps = true
                                     }
                                 }
@@ -67,8 +67,8 @@ class FeedMixLoadViewModel(
                             )
                             MainApplication.feedMMConversionFlow.collect {
                                 when (it) {
-                                    EggLabelAppsFlyerState.EggLabelDefault -> {}
-                                    EggLabelAppsFlyerState.EggLabelError -> {
+                                    FeedMixAppsFlyerState.FeedMixDefault -> {}
+                                    FeedMixAppsFlyerState.FeedMixError -> {
                                         _chickHealthHomeScreenState.value =
                                             FeedMixHomeScreenState.FeedMixSuccess(
                                                 feedMixChickLocalStorageManager.feedMixSavedUrl
@@ -76,9 +76,9 @@ class FeedMixLoadViewModel(
                                         eggLabelGetApps = true
                                     }
 
-                                    is EggLabelAppsFlyerState.EggLabelSuccess -> {
+                                    is FeedMixAppsFlyerState.FeedMixSuccess -> {
                                         if (!eggLabelGetApps) {
-                                            eggLabelGetData(it.feedMixxChickkData)
+                                            feedMixGetData(it.feedMixxChickkData)
                                             eggLabelGetApps = true
                                         }
                                     }
@@ -109,7 +109,7 @@ class FeedMixLoadViewModel(
     }
 
 
-    private suspend fun eggLabelGetData(conversation: MutableMap<String, Any>?) {
+    private suspend fun feedMixGetData(conversation: MutableMap<String, Any>?) {
         val eggLabelData = feedMixGetAllUseCaseInApp.invoke(conversation)
         if (feedMixChickLocalStorageManager.feedMixAppState == 0) {
             if (eggLabelData == null) {

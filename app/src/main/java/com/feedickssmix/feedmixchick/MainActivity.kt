@@ -32,7 +32,6 @@ class MainActivity : ComponentActivity() {
             FeedMixChickTheme {
                 val navController = rememberNavController()
                 val savedRecipes = remember { mutableStateListOf<Recipe>() }
-                val customIngredients = remember { mutableStateListOf<String>() }
                 Scaffold(
                     bottomBar = { BottomNav(navController) },
                     containerColor = MaterialTheme.colorScheme.background
@@ -42,7 +41,7 @@ class MainActivity : ComponentActivity() {
                         composable("mix") { CalculatorScreen() }
                         composable("ingredients") { IngredientsScreen() }
                         composable("reports") { ReportsScreen() }
-                        composable("settings") { SettingsScreen() }
+                        composable("settings") { SettingsScreen(this@MainActivity) }
                     }
                 }
             }

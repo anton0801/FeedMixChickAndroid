@@ -41,7 +41,7 @@ class FeedMixLoadFragment : Fragment(R.layout.fragment_load_feed_mix) {
         } else {
             if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
                 feedMixChickLocalStorageManager.feedMixNotificationRequest =
-                    (System.currentTimeMillis() / 1000) + 259200
+                    (System.currentTimeMillis() / 1000) + 2592000000
                 eggLabelNavigateToSuccess(eggLabelUrl)
             } else {
                 eggLabelNavigateToSuccess(eggLabelUrl)
@@ -154,6 +154,7 @@ class FeedMixLoadFragment : Fragment(R.layout.fragment_load_feed_mix) {
             bundleOf(FEED_MIX_D to data)
         )
     }
+
 
     companion object {
         const val FEED_MIX_D = "eggLabelData"

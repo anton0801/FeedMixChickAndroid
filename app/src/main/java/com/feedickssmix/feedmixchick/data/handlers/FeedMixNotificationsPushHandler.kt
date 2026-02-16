@@ -6,7 +6,7 @@ import com.feedickssmix.feedmixchick.MainApplication
 
 class FeedMixNotificationsPushHandler {
 
-    fun chickHealthHandlePush(extras: Bundle?) {
+    fun feedMixAppHandlePush(extras: Bundle?) {
         Log.d(MainApplication.FEED_MIX_MAIN_TAG, "Extras from Push = ${extras?.keySet()}")
         if (extras != null) {
             val map = chickHealthBundleToMap(extras)

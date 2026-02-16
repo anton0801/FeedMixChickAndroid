@@ -3,7 +3,7 @@ package com.feedickssmix.feedmixchick.data.domain.model
 import com.google.gson.annotations.SerializedName
 
 private const val FEED_MIX_A = "com.feedickssmix.feedmixchick"
-private const val FEED_MIX_B = ""
+private const val FEED_MIX_B = "feedmixchick-3cc6e"
 
 
 data class FeedMixParam (

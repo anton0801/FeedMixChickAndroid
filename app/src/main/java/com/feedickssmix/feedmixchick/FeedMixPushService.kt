@@ -17,9 +17,9 @@ import kotlin.collections.contains
 class FeedMixPushService : FirebaseMessagingService() {
 
     companion object {
-        private const val CHICK_HEALTH_CHANNEL_ID = "chick_health_notifications"
-        private const val CHICK_HEALTH_CHANNEL_NAME = "Chick Health+ Notifications"
-        private const val CHICK_HEALTH_NOT_TAG = "CHICK_HEALTH"
+        private const val FEED_MIX_CHANNEL_ID = "feed_mix_notifications"
+        private const val FEED_MIX_CHANNEL_NAME = "Feed Mix Chick Notifications"
+        private const val FEED_MIX_NOT_TAG = "FEED_MIX_CHICK"
     }
 
     override fun onNewToken(token: String) {
@@ -31,9 +31,9 @@ class FeedMixPushService : FirebaseMessagingService() {
 
         remoteMessage.notification?.let {
             if (remoteMessage.data.contains("url")) {
-                eggLabelShowNotification(it.title ?: CHICK_HEALTH_NOT_TAG, it.body ?: "", data = remoteMessage.data["url"])
+                eggLabelShowNotification(it.title ?: FEED_MIX_NOT_TAG, it.body ?: "", data = remoteMessage.data["url"])
             } else {
-                eggLabelShowNotification(it.title ?: CHICK_HEALTH_NOT_TAG, it.body ?: "", data = null)
+                eggLabelShowNotification(it.title ?: FEED_MIX_NOT_TAG, it.body ?: "", data = null)
             }
         }
 
@@ -49,8 +49,8 @@ class FeedMixPushService : FirebaseMessagingService() {
         // Создаем канал уведомлений для Android 8+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
-                CHICK_HEALTH_CHANNEL_ID,
-                CHICK_HEALTH_CHANNEL_NAME,
+                FEED_MIX_CHANNEL_ID,
+                FEED_MIX_CHANNEL_NAME,
                 NotificationManager.IMPORTANCE_HIGH
             )
             eggLabelNotificationManager.createNotificationChannel(channel)
@@ -66,13 +66,13 @@ class FeedMixPushService : FirebaseMessagingService() {
             this,
             0,
             eggLabelIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
 
-        val eggLabelNotification = NotificationCompat.Builder(this, CHICK_HEALTH_CHANNEL_ID)
+        val eggLabelNotification = NotificationCompat.Builder(this, FEED_MIX_CHANNEL_ID)
             .setContentTitle(title)
             .setContentText(message)
-            .setSmallIcon(R.drawable.ic_launcher_background)
+            .setSmallIcon(R.drawable.ic_notifications_icon)
             .setAutoCancel(true)
             .setContentIntent(eggLabelPendingIntent)
             .build()
@@ -82,7 +82,7 @@ class FeedMixPushService : FirebaseMessagingService() {
 
     private fun eggLabelHandleDataPayload(data: Map<String, String>) {
         data.forEach { (key, value) ->
-            Log.d(CHICK_HEALTH_CHANNEL_ID, "Data key=$key value=$value")
+            Log.d(FEED_MIX_CHANNEL_ID, "Data key=$key value=$value")
         }
     }
 

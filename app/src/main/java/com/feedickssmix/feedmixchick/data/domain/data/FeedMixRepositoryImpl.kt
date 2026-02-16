@@ -27,16 +27,16 @@ interface FeedMixLabelApi {
 }
 
 
-private const val CHICK_HEALTH_MAIN = "https://chickheallth.com/"
+private const val FEED_MIX_SITELI = "https://feedmixchick.com/"
 
 class FeedMixRepositoryImpl {
 
-    suspend fun chickHealthLabelGetClient(
+    suspend fun feedMixAppGetClient(
         feedMixParam: FeedMixParam,
         eggLabelConversion: MutableMap<String, Any>?
     ): FeedMIxEntity? {
         val gson = Gson()
-        val api = chickHealthLabelGetApi(CHICK_HEALTH_MAIN, null)
+        val api = feedMixAppAGetApi(FEED_MIX_SITELI, null)
 
         val eggLabelJsonObject = gson.toJsonTree(feedMixParam).asJsonObject
         eggLabelConversion?.forEach { (key, value) ->
@@ -60,7 +60,7 @@ class FeedMixRepositoryImpl {
     }
 
 
-    private fun chickHealthLabelGetApi(url: String, client: OkHttpClient?): FeedMixLabelApi {
+    private fun feedMixAppAGetApi(url: String, client: OkHttpClient?): FeedMixLabelApi {
         val retrofit = Retrofit.Builder()
             .baseUrl(url)
             .client(client ?: OkHttpClient.Builder().build())

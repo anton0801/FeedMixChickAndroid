@@ -1,10 +1,13 @@
 package com.feedickssmix.feedmixchick
 
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -37,6 +40,9 @@ class FeedMixMainActivity : AppCompatActivity() {
         setContentView(binding.root)
         val feedMixRootView = findViewById<View>(android.R.id.content)
         FeedMixGlobalLayoutUtils().feedMixAssistActivity(this)
+
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+
         ViewCompat.setOnApplyWindowInsetsListener(feedMixRootView) { feedMixView, feedMixInsets ->
             val feedMixSystemBars = feedMixInsets.getInsets(WindowInsetsCompat.Type.systemBars())
             val feedMixDisplayCutout =
@@ -74,7 +80,7 @@ class FeedMixMainActivity : AppCompatActivity() {
             }
             WindowInsetsCompat.CONSUMED
         }
-        feedMixPushHandler.chickHealthHandlePush(intent.extras)
+        feedMixPushHandler.feedMixAppHandlePush(intent.extras)
     }
 
     override fun onResume() {

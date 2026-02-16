@@ -40,11 +40,11 @@ import retrofit2.http.Headers
 import retrofit2.http.Query
 
 
-sealed interface EggLabelAppsFlyerState {
-    data object EggLabelDefault : EggLabelAppsFlyerState
-    data class EggLabelSuccess(val feedMixxChickkData: MutableMap<String, Any>?) :
-        EggLabelAppsFlyerState
-    data object EggLabelError : EggLabelAppsFlyerState
+sealed interface FeedMixAppsFlyerState {
+    data object FeedMixDefault : FeedMixAppsFlyerState
+    data class FeedMixSuccess(val feedMixxChickkData: MutableMap<String, Any>?) :
+        FeedMixAppsFlyerState
+    data object FeedMixError : FeedMixAppsFlyerState
 }
 
 @HiltAndroidApp
@@ -102,27 +102,30 @@ class MainApplication : Application() {
 
                                 val resp = response.body()
                                 Log.d(FEED_MIX_MAIN_TAG, "After 5s: $resp")
-                                if (resp?.get("af_status") == "Organic") {
-                                    feedMixChickResume(EggLabelAppsFlyerState.EggLabelError)
-                                } else {
-                                    feedMixChickResume(
-                                        EggLabelAppsFlyerState.EggLabelSuccess(resp)
-                                    )
-                                }
+//                                if (resp?.get("af_status") == "Organic") {
+//                                    feedMixChickResume(FeedMixAppsFlyerState.FeedMixError)
+//                                } else {
+//                                    feedMixChickResume(
+//                                        FeedMixAppsFlyerState.FeedMixSuccess(resp)
+//                                    )
+//                                }
+                                feedMixChickResume(
+                                    FeedMixAppsFlyerState.FeedMixSuccess(resp)
+                                )
                             } catch (d: Exception) {
                                 Log.d(FEED_MIX_MAIN_TAG, "Error: ${d.message}")
-                                feedMixChickResume(EggLabelAppsFlyerState.EggLabelError)
+                                feedMixChickResume(FeedMixAppsFlyerState.FeedMixError)
                             }
                         }
                     } else {
-                        feedMixChickResume(EggLabelAppsFlyerState.EggLabelSuccess(p0))
+                        feedMixChickResume(FeedMixAppsFlyerState.FeedMixSuccess(p0))
                     }
                 }
 
                 override fun onConversionDataFail(p0: String?) {
                     feedMIxConvTimeoutJob?.cancel()
                     Log.d(FEED_MIX_MAIN_TAG, "onConversionDataFail: $p0")
-                    feedMixChickResume(EggLabelAppsFlyerState.EggLabelError)
+                    feedMixChickResume(FeedMixAppsFlyerState.FeedMixError)
                 }
 
                 override fun onAppOpenAttribution(p0: MutableMap<String, String>?) {
@@ -144,7 +147,7 @@ class MainApplication : Application() {
 
             override fun onError(p0: Int, p1: String) {
                 Log.d(FEED_MIX_MAIN_TAG, "AppsFlyer start error: $p0 - $p1")
-                feedMixChickResume(EggLabelAppsFlyerState.EggLabelError)
+                feedMixChickResume(FeedMixAppsFlyerState.FeedMixError)
             }
         })
         feedMixStartConvTimeot()
@@ -196,11 +199,11 @@ class MainApplication : Application() {
 
     companion object {
         var feedMInputMode = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
-        val feedMMConversionFlow: MutableStateFlow<EggLabelAppsFlyerState> = MutableStateFlow(
-            EggLabelAppsFlyerState.EggLabelDefault
+        val feedMMConversionFlow: MutableStateFlow<FeedMixAppsFlyerState> = MutableStateFlow(
+            FeedMixAppsFlyerState.FeedMixDefault
         )
         var FEED_MIX_FB_LI: String? = null
-        const val FEED_MIX_MAIN_TAG = "EggLabelMainTag"
+        const val FEED_MIX_MAIN_TAG = "FEEDMIX_MainTag"
     }
 
     private fun feedMixGetApiMethodsForAppsflyer(url: String, client: OkHttpClient?) : FeedMixAppsApi {
@@ -216,14 +219,14 @@ class MainApplication : Application() {
             delay(30000)
             if (!feedMixChIsResumed) {
                 Log.d(FEED_MIX_MAIN_TAG, "TIMEOUT: No conversion data received in 30s")
-                feedMixChickResume(EggLabelAppsFlyerState.EggLabelError)
+                feedMixChickResume(FeedMixAppsFlyerState.FeedMixError)
             }
         }
     }
 
-    private fun feedMixChickResume(state: EggLabelAppsFlyerState) {
+    private fun feedMixChickResume(state: FeedMixAppsFlyerState) {
         feedMIxConvTimeoutJob?.cancel()
-        if (state is EggLabelAppsFlyerState.EggLabelSuccess) {
+        if (state is FeedMixAppsFlyerState.FeedMixSuccess) {
             val convData = state.feedMixxChickkData ?: mutableMapOf()
             val deepData = feedMixxxChickkDeepLinksMap ?: mutableMapOf()
             val merged = mutableMapOf<String, Any>().apply {
@@ -236,7 +239,7 @@ class MainApplication : Application() {
             }
             if (!feedMixChIsResumed) {
                 feedMixChIsResumed = true
-                feedMMConversionFlow.value = EggLabelAppsFlyerState.EggLabelSuccess(merged)
+                feedMMConversionFlow.value = FeedMixAppsFlyerState.FeedMixSuccess(merged)
             }
         } else {
             if (!feedMixChIsResumed) {

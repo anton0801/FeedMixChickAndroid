@@ -20,7 +20,7 @@ class FeedMixGetAllUseCaseInApp(
             feedMixAfId = feedMixChSystemServiceI.getAppsflyerIdForApp()
         )
         Log.d(MainApplication.FEED_MIX_MAIN_TAG, "Params for request: $params")
-        return feedMixRepositoryImpl.chickHealthLabelGetClient(params, conversion)
+        return feedMixRepositoryImpl.feedMixAppGetClient(params, conversion)
     }
 
 
