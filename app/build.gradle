@@ -23,27 +23,27 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-//    signingConfigs {
-//        release {
-//            def isCI = "true".equals(System.getenv("CI"))
-//
-//            if (isCI) {
-//                def keystorePath = System.getenv("CM_KEYSTORE_PATH")
-//                if (!keystorePath) {
-//                    throw new GradleException("CM_KEYSTORE_PATH is not set in CI!")
-//                }
-//
-//                storeFile file(keystorePath)
-//                storePassword System.getenv("CM_KEYSTORE_PASSWORD")
-//                keyAlias System.getenv("CM_KEY_ALIAS")
-//                keyPassword System.getenv("CM_KEY_PASSWORD")
-//            }
-//        }
-//    }
+    signingConfigs {
+        release {
+            def isCI = "true".equals(System.getenv("CI"))
+
+            if (isCI) {
+                def keystorePath = System.getenv("CM_KEYSTORE_PATH")
+                if (!keystorePath) {
+                    throw new GradleException("CM_KEYSTORE_PATH is not set in CI!")
+                }
+
+                storeFile file(keystorePath)
+                storePassword System.getenv("CM_KEYSTORE_PASSWORD")
+                keyAlias System.getenv("CM_KEY_ALIAS")
+                keyPassword System.getenv("CM_KEY_PASSWORD")
+            }
+        }
+    }
 
     buildTypes {
         release {
-            // signingConfig signingConfigs.release
+            signingConfig signingConfigs.release
             minifyEnabled false
         }
     }
